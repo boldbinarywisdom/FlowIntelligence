@@ -2,3 +2,4 @@ https://www.adafruit.com/product/828 -- $10 sensors to return pulses. 1 pulse = 
 http://forum.arduino.cc/index.php?topic=8548.0 -- $10 sensor. Similar in functionality. Aruduino sketch availale. 
 http://www.rototron.info/raspberry-pi-analog-water-sensor-tutorial/ - bit involved with rpi and LCD display tutorial available
 https://cloud.google.com/solutions/iot/ - google iot to cloud block diagram
+https://cloud.google.com/solutions/iot/kit/ -- kit allows data gathering from sensors and upload to google cloud for analytics
