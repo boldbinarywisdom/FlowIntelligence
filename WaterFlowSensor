@@ -1,16 +1,21 @@
   /*
   YF-S201 Hall Effect Water Flow Meter / Sensor
-  Read Water Flow Meter and output reading in litres/hour
+  Read Water Flow Meter and output reading in liters/hour
 
 */
+/* AZ: what's the user license on this?? */
 
 volatile int  flow_frequency;  // Measures flow meter pulses
-unsigned int  l_hour;          // Calculated litres/hour                      
-unsigned char flowmeter = 2;  // Flow Meter Pin number
+unsigned int  l_hour;          // Calculated liters/hour                      
+//unsigned char flowmeter = 2;  // Flow Meter Pin number
+unsigned char FLOWMETER_PIN = 2; // Flow meter PIN on Arduino
+unsigned long totalLiters = 0L;
+unsigned long tempL;
+
 unsigned long currentTime;
 unsigned long cloopTime;
 
-void flow ()                  // Interruot function
+void flow ()                  // Interrupt function
 { 
    flow_frequency++;
 } 
@@ -29,14 +34,23 @@ void setup()
 void loop ()    
 {
    currentTime = millis();
-   // Every second, calculate and print litres/hour
+   
+   // Every second, calculate and print liters/hour
    if(currentTime >= (cloopTime + 1000))
    {     
       cloopTime = currentTime;              // Updates cloopTime
       // Pulse frequency (Hz) = 7.5Q, Q is flow rate in L/min. (Results in +/- 3% range)
+      tempL = (flow_frequency / 7.5); //Let's not wait for 1 hour and get interim total Liters
+      
       l_hour = (flow_frequency * 60 / 7.5); // (Pulse frequency x 60 min) / 7.5Q = flow rate in L/hour 
       flow_frequency = 0;                   // Reset Counter
-      Serial.print(l_hour, DEC);            // Print litres/hour
+      Serial.print(l_hour, DEC);            // Print liters/hour
       Serial.println(" L/hour");
+      
+      totalLiters +=tempL;
+      tempL = 0;
+      Serial.print(totalLiters, DEC);        // Print liters
+      Serial.println(" Total");
+      
    }
 }
